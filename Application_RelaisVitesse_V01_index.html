@@ -1,0 +1,1672 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Relais-Vitesse — Collège Pasteur</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#f7f8fa; --surface:#fff; --surface-2:#f0f2f5; --border:#e2e6ea;
+  --text:#1a2230; --muted:#7a8899;
+  --primary:#2563eb; --primary-lt:#eff4ff;
+  --accent:#f97316; --accent-lt:#fff7ed;
+  --green:#16a34a; --green-lt:#f0fdf4;
+  --orange:#d97706; --orange-lt:#fffbeb;
+  --red:#dc2626; --red-lt:#fef2f2;
+  --sh-sm:0 1px 3px rgba(0,0,0,.07),0 1px 2px rgba(0,0,0,.04);
+  --sh-md:0 4px 12px rgba(0,0,0,.08);
+  --r:10px; --r-sm:6px; --tr:180ms ease;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:15px}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+/* HEADER */
+.app-header{background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;box-shadow:var(--sh-sm)}
+.header-inner{max-width:1320px;margin:0 auto;padding:0 1.5rem;height:58px;display:flex;align-items:center;gap:1rem}
+.logo{display:flex;align-items:center;gap:.5rem;font-size:1.15rem;font-weight:600;white-space:nowrap}
+.logo-icon{font-size:1.3rem}
+.logo strong{color:var(--primary)}
+.header-controls{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;margin-left:auto}
+
+/* TABS */
+.tab-nav{background:var(--surface);border-bottom:2px solid var(--border);display:flex;overflow-x:auto;padding:0 1.5rem;max-width:1320px;margin:0 auto;width:100%;position:sticky;top:58px;z-index:99;box-shadow:var(--sh-sm)}
+.tab-btn{background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:500;color:var(--muted);padding:.75rem 1.1rem;border-bottom:2px solid transparent;margin-bottom:-2px;white-space:nowrap;transition:color var(--tr),border-color var(--tr)}
+.tab-btn:hover{color:var(--text)}
+.tab-btn.active{color:var(--primary);border-bottom-color:var(--primary)}
+
+/* CONTENT */
+.tab-content{display:none;max-width:1320px;margin:0 auto;padding:1.5rem}
+.tab-content.active{display:block}
+.section-header{display:flex;align-items:center;flex-wrap:wrap;gap:.75rem;margin-bottom:1.2rem}
+.section-header h2{font-size:1.25rem;font-weight:600;flex-shrink:0}
+.section-actions{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;margin-left:auto}
+
+/* CARD */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1.25rem 1.5rem;box-shadow:var(--sh-sm)}
+.card-title{font-size:.82rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:1rem;display:flex;align-items:center;gap:.5rem}
+.mt-md{margin-top:1.25rem}
+.mt-sm{margin-top:.75rem}
+.mt-xs{margin-top:.4rem}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:.35rem;padding:.44rem 1rem;border-radius:var(--r-sm);font-family:'DM Sans',sans-serif;font-size:.87rem;font-weight:500;cursor:pointer;border:1px solid transparent;transition:all var(--tr);white-space:nowrap}
+.btn-primary{background:var(--primary);color:#fff;border-color:var(--primary)}
+.btn-primary:hover{background:#1d4ed8}
+.btn-outline{background:transparent;color:var(--primary);border-color:var(--primary)}
+.btn-outline:hover{background:var(--primary-lt)}
+.btn-ghost{background:transparent;color:var(--muted);border-color:var(--border)}
+.btn-ghost:hover{background:var(--surface-2)}
+.btn-danger{background:var(--red);color:#fff;border-color:var(--red)}
+.btn-accent{background:var(--accent);color:#fff;border-color:var(--accent)}
+.btn-sm{padding:.3rem .7rem;font-size:.8rem}
+.btn-lg{padding:.65rem 1.4rem;font-size:1rem}
+.btn-full{width:100%;justify-content:center}
+
+/* INPUTS */
+.input-sm,.select-sm{height:32px;padding:0 .6rem;border:1px solid var(--border);border-radius:var(--r-sm);font-family:'DM Sans',sans-serif;font-size:.85rem;background:var(--surface);color:var(--text);outline:none}
+.input-sm:focus,.select-sm:focus{border-color:var(--primary)}
+.input-full,.select-full{width:100%;padding:.5rem .75rem;border:1px solid var(--border);border-radius:var(--r-sm);font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--text);background:var(--surface);outline:none;transition:border-color var(--tr)}
+.input-full:focus,.select-full:focus{border-color:var(--primary)}
+.select-pill{height:34px;padding:0 .8rem;border:1px solid var(--border);border-radius:20px;font-size:.85rem;background:var(--surface);color:var(--text);cursor:pointer;outline:none;max-width:210px}
+.textarea-sm{width:100%;padding:.5rem .75rem;border:1px solid var(--border);border-radius:var(--r-sm);font-family:'DM Mono',monospace;font-size:.82rem;color:var(--text);background:var(--surface);resize:vertical;outline:none}
+.label-sm{font-size:.82rem;color:var(--muted);white-space:nowrap}
+
+/* FORM */
+.form-group{display:flex;flex-direction:column;gap:.35rem;flex:1}
+.form-group label{font-size:.82rem;font-weight:500;color:var(--muted)}
+.form-row{display:flex;gap:.75rem;flex-wrap:wrap}
+.form-row .form-group{min-width:140px}
+
+/* BADGE */
+.badge{display:inline-block;padding:.15rem .55rem;border-radius:20px;font-size:.75rem;font-weight:500;background:var(--primary-lt);color:var(--primary)}
+.badge-warn{display:inline-block;padding:.15rem .55rem;border-radius:20px;font-size:.75rem;font-weight:500;background:var(--accent-lt);color:var(--accent)}
+.badge-sm{font-size:.75rem;color:var(--muted)}
+.text-muted{color:var(--muted);font-size:.82rem}
+
+/* RANKING TABLE */
+.ranking-table-wrap{overflow-x:auto}
+.ranking-table{width:100%;border-collapse:collapse;font-size:.88rem}
+.ranking-table th{text-align:left;padding:.55rem .75rem;font-size:.75rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;border-bottom:2px solid var(--border);white-space:nowrap}
+.ranking-table td{padding:.55rem .75rem;border-bottom:1px solid var(--border);vertical-align:middle}
+.ranking-table tr:last-child td{border-bottom:none}
+.ranking-table tr:hover td{background:var(--surface-2)}
+.rank-num{font-family:'DM Mono',monospace;font-size:.85rem;font-weight:600;color:var(--muted)}
+.rank-1 .rank-num{color:#b45309}
+.rank-2 .rank-num{color:#71717a}
+.rank-3 .rank-num{color:#92400e}
+.speed-val{font-family:'DM Mono',monospace;font-size:.92rem;font-weight:600;color:var(--primary)}
+.time-val{font-family:'DM Mono',monospace;font-size:.88rem;color:var(--text)}
+
+/* HISTORY */
+.history-list{display:flex;flex-direction:column;gap:.5rem}
+.history-item{display:flex;align-items:center;flex-wrap:wrap;gap:.5rem;padding:.6rem .9rem;background:var(--surface-2);border-radius:var(--r-sm);font-size:.85rem;border-left:3px solid var(--border)}
+.history-item.quality-ok{border-left-color:var(--green)}
+.history-item.quality-non_transmis{border-left-color:var(--red)}
+.history-item.quality-anticipe{border-left-color:var(--orange)}
+.history-item.quality-bouchon{border-left-color:#7c3aed}
+.history-item.quality-desorganise{border-left-color:var(--orange)}
+.history-time{font-family:'DM Mono',monospace;font-size:.75rem;color:var(--muted);margin-left:auto}
+
+/* ATTENDANCE */
+.attendance-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:.5rem}
+.att-item{display:flex;align-items:center;gap:.4rem;padding:.45rem .7rem;background:var(--surface-2);border-radius:var(--r-sm);font-size:.85rem;cursor:pointer;user-select:none;border:2px solid transparent;transition:all var(--tr)}
+.att-item.present{border-color:var(--green);background:var(--green-lt)}
+.att-item.absent{border-color:var(--red);background:var(--red-lt)}
+.att-item.blesse{border-color:var(--orange);background:var(--orange-lt)}
+.att-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;background:var(--border)}
+.present .att-dot{background:var(--green)}
+.absent .att-dot{background:var(--red)}
+.blesse .att-dot{background:var(--orange)}
+
+/* PASSAGE STATUS */
+.passage-status-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:.5rem}
+.psc{padding:.6rem .9rem;background:var(--surface-2);border-radius:var(--r-sm);border-left:4px solid var(--border);font-size:.85rem}
+.psc.no-passage{border-left-color:var(--red);background:var(--red-lt)}
+.psc.has-passage{border-left-color:var(--green)}
+.pass-count{font-family:'DM Mono',monospace;font-size:.78rem;color:var(--muted)}
+
+/* LIST GROUP */
+.list-group{display:flex;flex-direction:column;gap:.4rem}
+.list-item{display:flex;align-items:center;gap:.5rem;padding:.5rem .75rem;background:var(--surface-2);border-radius:var(--r-sm);font-size:.88rem}
+.list-item .item-name{flex:1}
+
+/* PROFILES */
+.profiles-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:.75rem}
+.profile-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1rem;cursor:pointer;text-align:center;transition:all var(--tr);box-shadow:var(--sh-sm)}
+.profile-card:hover{box-shadow:var(--sh-md);border-color:var(--primary);transform:translateY(-1px)}
+.profile-avatar{width:44px;height:44px;border-radius:50%;background:var(--primary-lt);color:var(--primary);display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:600;margin:0 auto .6rem}
+.profile-name{font-size:.92rem;font-weight:500}
+.profile-stats{font-size:.78rem;color:var(--muted);margin-top:.25rem}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.35);backdrop-filter:blur(2px);align-items:center;justify-content:center;padding:1rem}
+.modal-overlay.open{display:flex}
+.modal{background:var(--surface);border-radius:var(--r);box-shadow:var(--sh-md);width:100%;max-width:520px;max-height:90vh;overflow-y:auto;animation:slideUp .18s ease}
+.modal-md{max-width:640px}
+.modal-lg{max-width:780px}
+.modal-header{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--surface);z-index:1}
+.modal-header h3{font-size:1rem;font-weight:600}
+.modal-close{background:none;border:none;cursor:pointer;font-size:1rem;color:var(--muted);padding:.25rem;border-radius:var(--r-sm);line-height:1}
+.modal-close:hover{background:var(--surface-2)}
+.modal-body{padding:1.25rem 1.5rem;display:flex;flex-direction:column;gap:.85rem}
+.modal-footer{display:flex;justify-content:flex-end;gap:.5rem;padding-top:.5rem;margin-top:.25rem}
+
+/* RADIO BUTTONS */
+.btn-group-radio{display:flex;gap:.4rem;flex-wrap:wrap}
+.btn-radio{padding:.35rem .8rem;border-radius:20px;border:1.5px solid var(--border);background:var(--surface);color:var(--muted);font-size:.83rem;cursor:pointer;transition:all var(--tr);font-family:'DM Sans',sans-serif}
+.btn-radio:hover{border-color:var(--primary);color:var(--primary)}
+.btn-radio.active{background:var(--primary-lt);border-color:var(--primary);color:var(--primary);font-weight:500}
+.btn-radio.green.active{background:var(--green-lt);border-color:var(--green);color:var(--green)}
+.btn-radio.orange.active{background:var(--orange-lt);border-color:var(--orange);color:var(--orange)}
+.btn-radio.red.active{background:var(--red-lt);border-color:var(--red);color:var(--red)}
+
+/* CHRONO COLORS */
+.chrono-green{color:var(--green)!important;font-weight:600}
+.chrono-orange{color:var(--orange)!important;font-weight:600}
+.chrono-red{color:var(--red)!important;font-weight:600}
+
+/* BATTLE */
+.battle-teams-builder{display:flex;flex-direction:column;gap:.75rem}
+.battle-team-row{background:var(--surface-2);border-radius:var(--r-sm);padding:.75rem 1rem;display:flex;align-items:flex-start;flex-wrap:wrap;gap:.5rem}
+.battle-team-label{font-weight:500;font-size:.9rem;min-width:70px;padding-top:.3rem}
+.battle-area{display:flex;flex-direction:column;gap:1rem}
+.battle-match{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1rem 1.5rem}
+.battle-match-header{display:flex;align-items:center;gap:1rem;margin-bottom:.75rem;font-weight:600}
+.battle-laps{display:flex;flex-direction:column;gap:.4rem}
+.battle-lap-row{display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;font-size:.88rem;padding:.3rem 0;border-bottom:1px solid var(--border)}
+.battle-lap-row:last-child{border-bottom:none}
+.battle-lap-num{font-family:'DM Mono',monospace;width:65px;color:var(--muted);flex-shrink:0}
+.lap-result{font-family:'DM Mono',monospace;font-weight:700;color:var(--primary)}
+.sw-display{font-family:'DM Mono',monospace;font-size:2.8rem;font-weight:600;text-align:center;padding:.75rem;letter-spacing:.05em;color:var(--text)}
+.sw-btn{background:var(--primary);color:#fff;border:none;border-radius:var(--r);padding:.8rem;font-size:1rem;font-weight:600;cursor:pointer;width:100%;transition:background var(--tr)}
+.sw-btn:hover{background:#1d4ed8}
+.sw-btn.running{background:var(--red)}
+.sw-btn.running:hover{background:#b91c1c}
+
+/* CSV */
+.csv-zone{background:var(--surface-2);border-radius:var(--r-sm);padding:.75rem}
+.divider{border:none;border-top:1px solid var(--border);margin:1rem 0}
+.empty-state{text-align:center;padding:2rem 1rem;color:var(--muted);font-size:.9rem}
+
+/* TOAST */
+.toast{position:fixed;bottom:1.5rem;right:1.5rem;z-index:999;background:var(--text);color:#fff;padding:.65rem 1.25rem;border-radius:var(--r-sm);font-size:.88rem;box-shadow:var(--sh-md);animation:slideUp .2s ease;pointer-events:none}
+.toast.hidden{display:none}
+.toast.success{background:var(--green)}
+.toast.error{background:var(--red)}
+
+.hidden{display:none!important}
+
+/* STARTER / NAME LINK */
+.btn-name-link{background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.88rem;color:var(--primary);text-decoration:underline;text-decoration-style:dotted;padding:0;text-align:left}
+.btn-name-link:hover{color:#1d4ed8}
+.rc-val{display:inline-block;min-width:24px;text-align:center;padding:.1rem .45rem;border-radius:20px;font-size:.82rem;font-weight:600}
+.rc-zero{color:var(--muted);background:var(--surface-2)}
+.rc-low{color:var(--red);background:var(--red-lt)}
+.rc-mid{color:var(--orange);background:var(--orange-lt)}
+.rc-high{color:var(--green);background:var(--green-lt)}
+
+@keyframes slideUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+@media(max-width:640px){
+  .header-inner{flex-wrap:wrap;height:auto;padding:.75rem 1rem;gap:.5rem}
+  .header-controls{flex-wrap:wrap}
+  .tab-content{padding:1rem .75rem}
+  .section-header{flex-direction:column;align-items:flex-start}
+  .section-actions{margin-left:0}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="app-header">
+  <div class="header-inner">
+    <div class="logo">
+      <span class="logo-icon">⚡</span>
+      <div>
+        <div>Relais<strong>-Vitesse</strong></div>
+        <div style="font-size:.65rem;font-weight:400;color:var(--muted);letter-spacing:.04em;margin-top:-.1rem">Collège Pasteur</div>
+      </div>
+    </div>
+    <div class="header-controls">
+      <select id="classSelect" class="select-pill"><option value="">— Classe —</option></select>
+      <select id="lessonSelect" class="select-pill"><option value="">— Leçon —</option></select>
+      <button class="btn btn-outline" id="btnOpenClass">Classes</button>
+      <button class="btn btn-outline" id="btnOpenLesson">Leçons</button>
+    </div>
+  </div>
+</header>
+
+<!-- TABS -->
+<nav class="tab-nav">
+  <button class="tab-btn active" data-tab="tab-test">Test individuel</button>
+  <button class="tab-btn" data-tab="tab-training">Entraînement 60m</button>
+  <button class="tab-btn" data-tab="tab-passage">Passage 60m</button>
+  <button class="tab-btn" data-tab="tab-battle">Battle</button>
+  <button class="tab-btn" data-tab="tab-profiles">Profils élèves</button>
+  <button class="tab-btn" data-tab="tab-settings">⚙ Enseignant</button>
+</nav>
+
+<!-- TAB: TEST INDIVIDUEL -->
+<section class="tab-content active" id="tab-test">
+  <div class="section-header">
+    <h2>Test individuel</h2>
+    <div class="section-actions">
+      <label class="label-sm">Distance (m)</label>
+      <input type="number" id="testDistance" class="input-sm" value="30" min="10" max="200" style="width:70px">
+      <label class="label-sm">Type</label>
+      <select id="testType" class="select-sm">
+        <option value="arrete">Départ arrêté</option>
+        <option value="lance">Départ lancé</option>
+        <option value="both">Arrêté puis Lancé</option>
+      </select>
+      <button class="btn btn-primary" id="btnTestEntry">+ Enregistrer passage</button>
+    </div>
+  </div>
+  <div class="card"><h3 class="card-title">Classement — Vitesses</h3><div id="testRanking" class="ranking-table-wrap"><p class="empty-state">Aucune donnée. Sélectionnez une classe.</p></div></div>
+  <div class="card mt-md"><h3 class="card-title">Historique des passages</h3><div id="testHistory" class="history-list"></div></div>
+</section>
+
+<!-- TAB: ENTRAÎNEMENT 60m -->
+<section class="tab-content" id="tab-training">
+  <div class="section-header">
+    <h2>Entraînement 60m</h2>
+    <div class="section-actions">
+      <label class="label-sm">Zone (m)</label>
+      <input type="number" id="trainZoneStart" class="input-sm" value="30" min="0" max="60" style="width:58px"> à
+      <input type="number" id="trainZoneEnd" class="input-sm" value="50" min="0" max="60" style="width:58px">
+      <select id="trainSubZones" class="select-sm"><option value="2">2 sous-zones</option><option value="4">4 sous-zones</option></select>
+      <button class="btn btn-primary" id="btnTrainEntry">+ Enregistrer passage</button>
+    </div>
+  </div>
+  <div class="card"><h3 class="card-title">Classement binômes <span class="badge">meilleur temps</span></h3><div id="trainRanking" class="ranking-table-wrap"><p class="empty-state">Aucune donnée.</p></div></div>
+  <div class="card mt-md"><h3 class="card-title">Récapitulatif élèves <span class="text-muted" style="font-size:.78rem;font-weight:400">— cliquer un prénom pour ajouter un rôle de Starter</span></h3><div id="trainRecap" class="ranking-table-wrap"></div></div>
+  <div class="card mt-md"><h3 class="card-title">Historique des passages</h3><div id="trainHistory" class="history-list"></div></div>
+</section>
+
+<!-- TAB: PASSAGE 60m -->
+<section class="tab-content" id="tab-passage">
+  <div class="section-header">
+    <h2>Passage 60m</h2>
+    <div class="section-actions"><button class="btn btn-primary" id="btnPassageEntry">+ Enregistrer passage</button></div>
+  </div>
+  <div class="card"><h3 class="card-title">Suivi des passages <span class="badge-warn">1 passage obligatoire</span></h3><div id="passageStatus" class="passage-status-grid"><p class="empty-state">Aucune donnée.</p></div></div>
+  <div class="card mt-md"><h3 class="card-title">Classement</h3><div id="passageRanking" class="ranking-table-wrap"></div></div>
+  <div class="card mt-md"><h3 class="card-title">Récapitulatif élèves <span class="text-muted" style="font-size:.78rem;font-weight:400">— cliquer un prénom pour ajouter un rôle de Starter</span></h3><div id="passageRecap" class="ranking-table-wrap"></div></div>
+  <div class="card mt-md"><h3 class="card-title">Historique</h3><div id="passageHistory" class="history-list"></div></div>
+</section>
+
+<!-- TAB: BATTLE -->
+<section class="tab-content" id="tab-battle">
+  <div class="section-header">
+    <h2>Battle</h2>
+    <div class="section-actions">
+      <label class="label-sm">Nb tours</label>
+      <input type="number" id="battleLaps" class="input-sm" value="4" min="1" max="20" style="width:58px">
+      <label class="label-sm">m / tour</label>
+      <input type="number" id="battleLapDist" class="input-sm" value="60" min="10" max="400" style="width:68px">
+      <button class="btn btn-primary" id="btnBattleSetup">Configurer une battle</button>
+    </div>
+  </div>
+  <div id="battleArea"><div class="card"><p class="empty-state">Configurez une battle pour commencer.</p></div></div>
+  <div class="card mt-md"><h3 class="card-title">Historique des battles</h3><div id="battleHistory" class="history-list"></div></div>
+</section>
+
+<!-- TAB: PROFILS -->
+<section class="tab-content" id="tab-profiles">
+  <div class="section-header">
+    <h2>Profils élèves</h2>
+    <div class="section-actions"><input type="text" id="profileSearch" class="input-sm" placeholder="Rechercher…" style="width:180px"></div>
+  </div>
+  <div id="profilesGrid" class="profiles-grid"><p class="empty-state">Sélectionnez une classe.</p></div>
+</section>
+
+<!-- TAB: ENSEIGNANT -->
+<section class="tab-content" id="tab-settings">
+  <div class="section-header"><h2>Paramètres enseignant</h2></div>
+  <div class="card">
+    <h3 class="card-title">Coupelles — couleurs et distances</h3>
+    <p class="text-muted" style="margin-bottom:.75rem">Définissez les coupelles disponibles comme repères de marque. Elles seront proposées dans les saisies d'entraînement.</p>
+    <div id="coupellesList" class="list-group"></div>
+    <div class="form-row mt-sm">
+      <div class="form-group"><label>Couleur</label><input type="text" id="newCoupCouleur" class="input-full" placeholder="ex : Rouge"></div>
+      <div class="form-group"><label>Distance (m)</label><input type="number" id="newCoupDist" class="input-full" step="0.5" min="0" placeholder="ex : 1"></div>
+      <div class="form-group"><label>Couleur CSS</label><input type="color" id="newCoupColor" class="input-full" value="#ef4444" style="height:38px;padding:.2rem"></div>
+      <div style="display:flex;align-items:flex-end"><button class="btn btn-primary" id="btnAddCoupelle">Ajouter</button></div>
+    </div>
+  </div>
+  <div class="card mt-md">
+    <h3 class="card-title">Marques prédéfinies libres</h3>
+    <p class="text-muted" style="margin-bottom:.75rem">Options textuelles simples proposées dans la liste prédéfinie.</p>
+    <div id="freeMarksList" class="list-group"></div>
+    <div class="form-row mt-sm">
+      <input type="text" id="newFreeMark" class="input-full" placeholder="ex : Repère A">
+      <button class="btn btn-primary" id="btnAddFreeMark">Ajouter</button>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ MODALS ══════════════ -->
+
+<!-- Modal Classes -->
+<div class="modal-overlay" id="modalClass">
+  <div class="modal">
+    <div class="modal-header"><h3>Gestion des classes</h3><button class="modal-close" data-close="modalClass">✕</button></div>
+    <div class="modal-body">
+      <div class="form-row">
+        <input type="text" id="newClassName" class="input-full" placeholder="Nom de la classe (ex : 2nde 3)">
+        <button class="btn btn-primary" id="btnAddClass">Ajouter</button>
+      </div>
+      <div id="classList" class="list-group mt-sm"></div>
+      <hr class="divider">
+      <h4>Élèves de la classe sélectionnée</h4>
+      <div id="studentAddArea" class="hidden">
+        <div class="form-row mt-sm">
+          <input type="text" id="newStudentFirst" class="input-full" placeholder="Prénom">
+          <input type="text" id="newStudentLast" class="input-full" placeholder="Nom">
+          <button class="btn btn-primary" id="btnAddStudent">+</button>
+        </div>
+        <div class="csv-zone mt-sm">
+          <label class="label-sm">Import CSV — une ligne par élève : <code>Prénom,Nom</code></label>
+          <textarea id="csvInput" class="textarea-sm mt-xs" rows="4" placeholder="Alice,Martin&#10;Bob,Dupont&#10;..."></textarea>
+          <button class="btn btn-outline mt-xs" id="btnImportCSV">Importer</button>
+        </div>
+        <div id="studentList" class="list-group mt-sm"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Leçons -->
+<div class="modal-overlay" id="modalLesson">
+  <div class="modal">
+    <div class="modal-header"><h3>Gestion des leçons</h3><button class="modal-close" data-close="modalLesson">✕</button></div>
+    <div class="modal-body">
+      <div class="form-row">
+        <input type="text" id="newLessonName" class="input-full" placeholder="Nom (ex : Leçon 3)">
+        <input type="date" id="newLessonDate" class="input-full">
+        <button class="btn btn-primary" id="btnAddLesson">Créer</button>
+      </div>
+      <div id="lessonList" class="list-group mt-sm"></div>
+      <hr class="divider">
+      <div id="attendanceArea" class="hidden">
+        <h4>Présences</h4>
+        <p class="text-muted mt-xs">Cliquer pour basculer : Présent → Absent → Blessé → ND</p>
+        <div id="attendanceList" class="attendance-grid mt-sm"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Test individuel -->
+<div class="modal-overlay" id="modalTestEntry">
+  <div class="modal modal-md">
+    <div class="modal-header"><h3>Passage — Test individuel</h3><button class="modal-close" data-close="modalTestEntry">✕</button></div>
+    <div class="modal-body">
+      <div class="form-group"><label>Élève</label><select id="testStudent" class="select-full"></select></div>
+      <div class="form-row">
+        <div class="form-group"><label>Distance (m)</label><input type="number" id="testEntryDist" class="input-full" value="30"></div>
+        <div class="form-group"><label>Type de départ</label>
+          <select id="testEntryType" class="select-full">
+            <option value="arrete">Arrêté</option>
+            <option value="lance">Lancé</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Passage # <span class="badge-sm">max 5</span></label><input type="number" id="testEntryPass" class="input-full" value="1" min="1" max="5"></div>
+      </div>
+      <div class="form-group"><label>Temps (s)</label><input type="number" id="testEntryTime" class="input-full" step="0.01" placeholder="ex : 4.23"></div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" data-close="modalTestEntry">Annuler</button>
+        <button class="btn btn-primary" id="btnSaveTest">Enregistrer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Entraînement 60m -->
+<div class="modal-overlay" id="modalTrainEntry">
+  <div class="modal modal-lg">
+    <div class="modal-header"><h3>Passage — Entraînement 60m</h3><button class="modal-close" data-close="modalTrainEntry">✕</button></div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group"><label>Donneur</label><select id="trainDonneur" class="select-full"></select></div>
+        <div class="form-group"><label>Receveur</label><select id="trainReceveur" class="select-full"></select></div>
+        <div class="form-group"><label>Chronomètreur</label><select id="trainChrono" class="select-full"></select></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Temps (s) <span class="text-muted">— vide si non transmis</span></label><input type="number" id="trainTime" class="input-full" step="0.01" placeholder="ex : 7.45"></div>
+      </div>
+      <div class="form-group">
+        <label>Qualité de la transmission</label>
+        <div class="btn-group-radio" id="trainQualityGroup">
+          <button class="btn-radio active" data-qval="">—</button>
+          <button class="btn-radio green" data-qval="ok">✅ Transmis</button>
+          <button class="btn-radio red" data-qval="non_transmis">❌ Non transmis</button>
+          <button class="btn-radio orange" data-qval="anticipe">↩️ Anticipé</button>
+          <button class="btn-radio" style="border-color:#7c3aed" data-qval="bouchon">🚧 Bouchon</button>
+          <button class="btn-radio orange" data-qval="desorganise">⚠️ Désorganisée</button>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Zone utilisée</label><select id="trainZoneUsed" class="select-full"></select></div>
+        <div class="form-group"><label>Marque / Repère</label><div id="trainMarkArea"></div></div>
+      </div>
+      <div class="form-group">
+        <label>Validation chronomètreur</label>
+        <div class="btn-group-radio" id="chronoValidation">
+          <button class="btn-radio active" data-cval="">—</button>
+          <button class="btn-radio green" data-cval="valide">✓ Validé</button>
+          <button class="btn-radio orange" data-cval="construction">~ En construction</button>
+          <button class="btn-radio red" data-cval="invalide">✗ Non validé</button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" data-close="modalTrainEntry">Annuler</button>
+        <button class="btn btn-primary" id="btnSaveTrain">Enregistrer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Passage 60m -->
+<div class="modal-overlay" id="modalPassageEntry">
+  <div class="modal modal-lg">
+    <div class="modal-header"><h3>Passage officiel 60m</h3><button class="modal-close" data-close="modalPassageEntry">✕</button></div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group"><label>Donneur</label><select id="passDonneur" class="select-full"></select></div>
+        <div class="form-group"><label>Receveur</label><select id="passReceveur" class="select-full"></select></div>
+        <div class="form-group"><label>Chronomètreur</label><select id="passChrono" class="select-full"></select></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Temps (s)</label><input type="number" id="passTime" class="input-full" step="0.01" placeholder="ex : 7.45"></div>
+      </div>
+      <div class="form-group">
+        <label>Qualité de la transmission</label>
+        <div class="btn-group-radio" id="passQualityGroup">
+          <button class="btn-radio active" data-pqval="">—</button>
+          <button class="btn-radio green" data-pqval="ok">✅ Transmis</button>
+          <button class="btn-radio red" data-pqval="non_transmis">❌ Non transmis</button>
+          <button class="btn-radio orange" data-pqval="anticipe">↩️ Anticipé</button>
+          <button class="btn-radio" style="border-color:#7c3aed" data-pqval="bouchon">🚧 Bouchon</button>
+          <button class="btn-radio orange" data-pqval="desorganise">⚠️ Désorganisée</button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Validation chronomètreur</label>
+        <div class="btn-group-radio" id="passChronoValidation">
+          <button class="btn-radio active" data-pcval="">—</button>
+          <button class="btn-radio green" data-pcval="valide">✓ Validé</button>
+          <button class="btn-radio orange" data-pcval="construction">~ En construction</button>
+          <button class="btn-radio red" data-pcval="invalide">✗ Non validé</button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" data-close="modalPassageEntry">Annuler</button>
+        <button class="btn btn-primary" id="btnSavePassage">Enregistrer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Battle Setup -->
+<div class="modal-overlay" id="modalBattleSetup">
+  <div class="modal modal-lg">
+    <div class="modal-header"><h3>Configuration Battle</h3><button class="modal-close" data-close="modalBattleSetup">✕</button></div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group"><label>Nb tours</label><input type="number" id="bsLaps" class="input-full" value="4" min="1"></div>
+        <div class="form-group"><label>Distance / tour (m)</label><input type="number" id="bsDist" class="input-full" value="60" min="10"></div>
+      </div>
+      <h4 class="mt-sm">Équipes</h4>
+      <div id="battleTeamsBuilder" class="battle-teams-builder"></div>
+      <button class="btn btn-outline mt-sm" id="btnAddBattleTeam">+ Ajouter une équipe</button>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" data-close="modalBattleSetup">Annuler</button>
+        <button class="btn btn-primary" id="btnStartBattle">Lancer la Battle</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Profil élève -->
+<div class="modal-overlay" id="modalProfile">
+  <div class="modal modal-lg">
+    <div class="modal-header"><h3 id="profileModalTitle">Profil élève</h3><button class="modal-close" data-close="modalProfile">✕</button></div>
+    <div class="modal-body" id="profileModalBody"></div>
+  </div>
+</div>
+
+<!-- Modal édition générique -->
+<div class="modal-overlay" id="modalEdit">
+  <div class="modal modal-md">
+    <div class="modal-header"><h3 id="editModalTitle">Modifier</h3><button class="modal-close" data-close="modalEdit">✕</button></div>
+    <div class="modal-body" id="editModalBody"></div>
+  </div>
+</div>
+
+<div id="toast" class="toast hidden"></div>
+
+<script>
+'use strict';
+// ─── UTILS ────────────────────────────────────────────────────────────────────
+const uid  = () => Math.random().toString(36).slice(2) + Date.now().toString(36);
+const now  = () => new Date().toISOString();
+const fmtDT = iso => { const d = new Date(iso); return d.toLocaleDateString('fr-FR') + ' ' + d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}); };
+const fmtT  = s  => s != null && s !== '' ? parseFloat(s).toFixed(2) + 's' : '—';
+const kmh   = (m,s) => s ? ((m/s)*3.6).toFixed(2) : null;
+const el    = id => document.getElementById(id);
+
+let _toastTimer = null;
+function toast(msg, type='') {
+  const t = el('toast'); t.textContent = msg; t.className = 'toast' + (type ? ' '+type : '');
+  clearTimeout(_toastTimer); _toastTimer = setTimeout(() => t.className='toast hidden', 3000);
+}
+
+// ─── STORAGE ──────────────────────────────────────────────────────────────────
+const DB = {
+  get: k => { try { return JSON.parse(localStorage.getItem('sv_'+k)); } catch{ return null; } },
+  set: (k,v) => localStorage.setItem('sv_'+k, JSON.stringify(v))
+};
+if (!DB.get('classes'))   DB.set('classes', []);
+if (!DB.get('lessons'))   DB.set('lessons', []);
+if (!DB.get('records'))   DB.set('records', []);
+if (!DB.get('coupelles')) DB.set('coupelles', [
+  {id:'c1', label:'Rouge',   dist:'1',   color:'#ef4444'},
+  {id:'c2', label:'Bleu',    dist:'1.5', color:'#3b82f6'},
+  {id:'c3', label:'Jaune',   dist:'2',   color:'#eab308'},
+  {id:'c4', label:'Vert',    dist:'2.5', color:'#22c55e'},
+  {id:'c5', label:'Orange',  dist:'3',   color:'#f97316'},
+  {id:'c6', label:'Violet',  dist:'3.5', color:'#a855f7'},
+]);
+if (!DB.get('freeMarks'))  DB.set('freeMarks', ['0.5m','1m','1.5m','2m','2.5m','3m']);
+if (!DB.get('starters'))   DB.set('starters', []);
+
+// ─── STATE ────────────────────────────────────────────────────────────────────
+const S = { classId:null, lessonId:null, editClassId:null, battleTeams:[], activeBattle:null };
+
+// ─── MODALS ───────────────────────────────────────────────────────────────────
+function openModal(id)  { el(id).classList.add('open'); }
+function closeModal(id) { el(id).classList.remove('open'); }
+
+document.addEventListener('click', e => {
+  if (e.target.dataset.close) closeModal(e.target.dataset.close);
+  if (e.target.classList.contains('modal-overlay')) closeModal(e.target.id);
+});
+
+// ─── GENERIC BTN-RADIO HANDLER ────────────────────────────────────────────────
+// All btn-radio groups: clicking activates within parent .btn-group-radio
+document.addEventListener('click', e => {
+  if (!e.target.classList.contains('btn-radio')) return;
+  const group = e.target.closest('.btn-group-radio');
+  if (!group) return;
+  group.querySelectorAll('.btn-radio').forEach(b => b.classList.remove('active'));
+  e.target.classList.add('active');
+});
+
+function getRadioVal(groupId, attr) {
+  return document.querySelector(`#${groupId} .btn-radio.active`)?.dataset[attr] ?? '';
+}
+function resetRadioGroup(groupId) {
+  const grp = el(groupId); if (!grp) return;
+  grp.querySelectorAll('.btn-radio').forEach((b,i) => b.classList.toggle('active', i===0));
+}
+
+// ─── TABS ─────────────────────────────────────────────────────────────────────
+document.querySelectorAll('.tab-btn').forEach(btn => btn.addEventListener('click', () => {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  el(btn.dataset.tab).classList.add('active');
+  renderTab(btn.dataset.tab);
+}));
+
+function renderTab(tab) {
+  if (tab === 'tab-test')     renderTestTab();
+  if (tab === 'tab-training') renderTrainTab();
+  if (tab === 'tab-passage')  renderPassageTab();
+  if (tab === 'tab-battle')   renderBattleTab();
+  if (tab === 'tab-profiles') renderProfiles();
+  if (tab === 'tab-settings') renderSettings();
+}
+function activeTab() { return document.querySelector('.tab-btn.active')?.dataset.tab; }
+
+// ─── CLASSES ──────────────────────────────────────────────────────────────────
+const getClasses = () => DB.get('classes') || [];
+const saveClasses = v => DB.set('classes', v);
+
+el('btnOpenClass').addEventListener('click', () => { renderClassList(); openModal('modalClass'); });
+el('btnOpenLesson').addEventListener('click', () => {
+  if (!S.classId) { toast('Sélectionnez une classe d\'abord', 'error'); return; }
+  renderLessonList(); el('attendanceArea').classList.add('hidden'); openModal('modalLesson');
+});
+
+el('btnAddClass').addEventListener('click', () => {
+  const name = el('newClassName').value.trim(); if (!name) return;
+  const classes = getClasses(); classes.push({ id:uid(), name, students:[] }); saveClasses(classes);
+  el('newClassName').value = ''; renderClassList(); populateClassSelect(); toast('Classe ajoutée','success');
+});
+
+function deleteClass(id) {
+  if (!confirm('Supprimer cette classe ?')) return;
+  saveClasses(getClasses().filter(c => c.id !== id));
+  if (S.classId === id) { S.classId=null; S.lessonId=null; }
+  renderClassList(); populateClassSelect();
+}
+
+function selectClassForStudents(id) {
+  S.editClassId = id; el('studentAddArea').classList.remove('hidden'); renderStudentList();
+}
+
+function renderClassList() {
+  const list = getClasses();
+  el('classList').innerHTML = list.length ? list.map(c => `
+    <div class="list-item">
+      <span class="item-name">${c.name} <span class="badge">${c.students.length} élève(s)</span></span>
+      <button class="btn btn-outline btn-sm" onclick="selectClassForStudents('${c.id}')">Élèves</button>
+      <button class="btn btn-danger btn-sm" onclick="deleteClass('${c.id}')">✕</button>
+    </div>`).join('') : '<p class="empty-state" style="padding:.5rem 0">Aucune classe.</p>';
+}
+
+function populateClassSelect() {
+  const sel = el('classSelect');
+  sel.innerHTML = '<option value="">— Classe —</option>' +
+    getClasses().map(c => `<option value="${c.id}"${S.classId===c.id?' selected':''}>${c.name}</option>`).join('');
+}
+
+el('classSelect').addEventListener('change', function() {
+  S.classId = this.value || null; S.lessonId = null;
+  populateLessonSelect(); renderTab(activeTab());
+});
+
+// ─── STUDENTS ─────────────────────────────────────────────────────────────────
+const getStudents = (cid) => { const c = getClasses().find(c=>c.id===(cid||S.classId)); return c?c.students:[]; };
+const studentName = id => { const s = getStudents().find(s=>s.id===id); return s ? s.first+' '+s.last : '?'; };
+
+function addStudent() {
+  const fn = el('newStudentFirst').value.trim(); if (!fn) return;
+  const ln = el('newStudentLast').value.trim();
+  const classes = getClasses(); const cl = classes.find(c=>c.id===S.editClassId); if (!cl) return;
+  cl.students.push({id:uid(), first:fn, last:ln}); saveClasses(classes);
+  el('newStudentFirst').value=''; el('newStudentLast').value=''; renderStudentList(); renderClassList();
+}
+el('btnAddStudent').addEventListener('click', addStudent);
+
+function deleteStudent(sid) {
+  const classes = getClasses(); const cl = classes.find(c=>c.id===S.editClassId); if (!cl) return;
+  cl.students = cl.students.filter(s=>s.id!==sid); saveClasses(classes); renderStudentList(); renderClassList();
+}
+
+el('btnImportCSV').addEventListener('click', () => {
+  const raw = el('csvInput').value.trim(); if (!raw) return;
+  const classes = getClasses(); const cl = classes.find(c=>c.id===S.editClassId);
+  if (!cl) { toast('Sélectionnez une classe d\'abord','error'); return; }
+  let count = 0;
+  raw.split('\n').forEach(line => {
+    const parts = line.split(','); const first = parts[0]?.trim(); const last = parts[1]?.trim()||'';
+    if (first) { cl.students.push({id:uid(), first, last}); count++; }
+  });
+  saveClasses(classes); el('csvInput').value=''; renderStudentList(); renderClassList();
+  toast(`${count} élève(s) importé(s)`,'success');
+});
+
+function renderStudentList() {
+  const students = getStudents(S.editClassId);
+  el('studentList').innerHTML = students.length ? students.map(s => `
+    <div class="list-item">
+      <span class="item-name">${s.first} ${s.last}</span>
+      <button class="btn btn-danger btn-sm" onclick="deleteStudent('${s.id}')">✕</button>
+    </div>`).join('') : '<p class="empty-state" style="padding:.5rem 0">Aucun élève.</p>';
+}
+
+// ─── LESSONS ──────────────────────────────────────────────────────────────────
+const getLessons   = () => (DB.get('lessons')||[]).filter(l=>l.classId===S.classId);
+const saveLesson   = l => { const all=DB.get('lessons')||[]; const i=all.findIndex(x=>x.id===l.id); if(i>=0)all[i]=l;else all.push(l); DB.set('lessons',all); };
+
+el('btnAddLesson').addEventListener('click', () => {
+  if (!S.classId) { toast('Sélectionnez une classe','error'); return; }
+  const name = el('newLessonName').value.trim() || 'Leçon';
+  const date = el('newLessonDate').value || new Date().toISOString().slice(0,10);
+  saveLesson({id:uid(), classId:S.classId, name, date, attendance:{}});
+  el('newLessonName').value=''; renderLessonList(); populateLessonSelect(); toast('Leçon créée','success');
+});
+
+function deleteLesson(id) {
+  if (!confirm('Supprimer cette leçon ?')) return;
+  DB.set('lessons',(DB.get('lessons')||[]).filter(l=>l.id!==id));
+  if (S.lessonId===id) S.lessonId=null;
+  renderLessonList(); populateLessonSelect();
+}
+
+function selectLesson(id) { S.lessonId=id; renderAttendance(id); el('attendanceArea').classList.remove('hidden'); }
+
+function renderLessonList() {
+  const lessons = getLessons();
+  el('lessonList').innerHTML = lessons.length ? lessons.map(l => `
+    <div class="list-item">
+      <span class="item-name">${l.name} <span class="text-muted">${l.date}</span></span>
+      <button class="btn btn-outline btn-sm" onclick="selectLesson('${l.id}')">Présences</button>
+      <button class="btn btn-danger btn-sm" onclick="deleteLesson('${l.id}')">✕</button>
+    </div>`).join('') : '<p class="empty-state" style="padding:.5rem 0">Aucune leçon.</p>';
+}
+
+function populateLessonSelect() {
+  const sel = el('lessonSelect');
+  sel.innerHTML = '<option value="">— Leçon —</option>' +
+    getLessons().map(l=>`<option value="${l.id}"${S.lessonId===l.id?' selected':''}>${l.name} (${l.date})</option>`).join('');
+}
+
+el('lessonSelect').addEventListener('change', function() {
+  S.lessonId = this.value || null; renderTab(activeTab());
+});
+
+// ─── ATTENDANCE ───────────────────────────────────────────────────────────────
+const ATT_CYCLE = [undefined,'present','absent','blesse'];
+function renderAttendance(lid) {
+  const all = DB.get('lessons')||[]; const lesson = all.find(l=>l.id===lid); if (!lesson) return;
+  el('attendanceList').innerHTML = getStudents(lesson.classId).map(s => {
+    const st = lesson.attendance[s.id];
+    return `<div class="att-item ${st||''}" onclick="toggleAtt('${lid}','${s.id}')">
+      <span class="att-dot"></span><span>${s.first} ${s.last}</span>
+    </div>`;
+  }).join('');
+}
+function toggleAtt(lid, sid) {
+  const all = DB.get('lessons')||[]; const l = all.find(x=>x.id===lid); if (!l) return;
+  const cur = ATT_CYCLE.indexOf(l.attendance[sid]);
+  l.attendance[sid] = ATT_CYCLE[(cur+1)%ATT_CYCLE.length]; DB.set('lessons',all); renderAttendance(lid);
+}
+function getPresentStudents() {
+  if (!S.lessonId) return getStudents();
+  const l = (DB.get('lessons')||[]).find(x=>x.id===S.lessonId); if (!l) return getStudents();
+  return getStudents().filter(s => l.attendance[s.id] !== 'absent');
+}
+
+// ─── RECORDS ──────────────────────────────────────────────────────────────────
+function getRecords(type) {
+  return (DB.get('records')||[]).filter(r =>
+    r.type===type && (!S.classId||r.classId===S.classId) && (!S.lessonId||r.lessonId===S.lessonId));
+}
+function saveRecord(r) {
+  const all = DB.get('records')||[]; r.classId=S.classId; r.lessonId=S.lessonId; r.createdAt=now(); all.push(r); DB.set('records',all);
+}
+function updateRecord(id, upd) {
+  const all = DB.get('records')||[]; const i=all.findIndex(r=>r.id===id); if(i>=0) Object.assign(all[i],upd); DB.set('records',all);
+}
+function deleteRecord(id) { DB.set('records',(DB.get('records')||[]).filter(r=>r.id!==id)); }
+
+// ─── CHRONO COLOR ─────────────────────────────────────────────────────────────
+function chronoStatus(sid) {
+  const recs = (DB.get('records')||[]).filter(r=>r.classId===S.classId&&(r.type==='training'||r.type==='passage')&&r.chronoId===sid&&r.chronoVal);
+  const v=recs.filter(r=>r.chronoVal==='valide').length;
+  const inv=recs.filter(r=>r.chronoVal==='invalide').length;
+  const con=recs.filter(r=>r.chronoVal==='construction').length;
+  if (v>=3) return 'green'; if (inv>0) return 'red'; if (con>0) return 'orange'; return '';
+}
+function chronoCls(sid) { const s=chronoStatus(sid); return s?'chrono-'+s:''; }
+
+// ─── FILL SELECTS ─────────────────────────────────────────────────────────────
+function fillSel(id, placeholder='— choisir —', students=null) {
+  const stud = students || getPresentStudents();
+  const s = el(id); if (!s) return;
+  s.innerHTML = `<option value="">${placeholder}</option>` +
+    stud.map(x=>`<option value="${x.id}">${x.first} ${x.last}</option>`).join('');
+}
+
+// Fill chrono select: exclude donneur and receveur
+function fillChronoSel(selId, excludeIds=[]) {
+  const stud = getPresentStudents().filter(s => !excludeIds.includes(s.id));
+  const s = el(selId); if (!s) return;
+  s.innerHTML = `<option value="">— Chrono (optionnel) —</option>` +
+    stud.map(x=>`<option value="${x.id}">${x.first} ${x.last}</option>`).join('');
+}
+
+function updateChronoOptions(donneurSelId, receveurSelId, chronoSelId) {
+  const don = el(donneurSelId)?.value;
+  const rec = el(receveurSelId)?.value;
+  fillChronoSel(chronoSelId, [don, rec].filter(Boolean));
+}
+
+// ─── QUALITY LABELS ───────────────────────────────────────────────────────────
+const QL = { ok:'✅ Transmis', non_transmis:'❌ Non transmis', anticipe:'↩️ Anticipé', bouchon:'🚧 Bouchon', desorganise:'⚠️ Désorganisée' };
+
+// ─── SETTINGS / COUPELLES / FREE MARKS ────────────────────────────────────────
+function getCoupelles() { return DB.get('coupelles') || []; }
+function getFreeMarks() { return DB.get('freeMarks') || []; }
+
+function renderSettings() {
+  const coup = getCoupelles();
+  el('coupellesList').innerHTML = coup.length ? coup.map(c => `
+    <div class="list-item">
+      <span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:${c.color};flex-shrink:0;margin-right:.25rem"></span>
+      <span class="item-name">${c.label} — ${c.dist}m</span>
+      <button class="btn btn-danger btn-sm" onclick="deleteCoupelle('${c.id}')">✕</button>
+    </div>`).join('') : '<p class="text-muted" style="padding:.25rem 0">Aucune coupelle.</p>';
+
+  const free = getFreeMarks();
+  el('freeMarksList').innerHTML = free.length ? free.map((m,i) => `
+    <div class="list-item">
+      <span class="item-name">${m}</span>
+      <button class="btn btn-danger btn-sm" onclick="deleteFreeMark(${i})">✕</button>
+    </div>`).join('') : '<p class="text-muted" style="padding:.25rem 0">Aucune marque libre.</p>';
+}
+
+el('btnAddCoupelle').addEventListener('click', () => {
+  const label = el('newCoupCouleur').value.trim();
+  const dist  = el('newCoupDist').value.trim();
+  const color = el('newCoupColor').value;
+  if (!label || !dist) { toast('Remplissez couleur et distance','error'); return; }
+  const coup = getCoupelles(); coup.push({id:uid(), label, dist, color}); DB.set('coupelles', coup);
+  el('newCoupCouleur').value=''; el('newCoupDist').value=''; renderSettings(); toast('Coupelle ajoutée','success');
+});
+
+function deleteCoupelle(id) {
+  DB.set('coupelles', getCoupelles().filter(c=>c.id!==id)); renderSettings();
+}
+
+el('btnAddFreeMark').addEventListener('click', () => {
+  const v = el('newFreeMark').value.trim(); if (!v) return;
+  const marks = getFreeMarks(); if (!marks.includes(v)) { marks.push(v); DB.set('freeMarks', marks); }
+  el('newFreeMark').value=''; renderSettings(); toast('Marque ajoutée','success');
+});
+
+function deleteFreeMark(idx) {
+  const marks = getFreeMarks(); marks.splice(idx,1); DB.set('freeMarks', marks); renderSettings();
+}
+
+// ─── STARTERS ─────────────────────────────────────────────────────────────────
+function getStarters() {
+  return (DB.get('starters')||[]).filter(s =>
+    (!S.classId  || s.classId  === S.classId) &&
+    (!S.lessonId || s.lessonId === S.lessonId)
+  );
+}
+function getAllClassStarters() {
+  return (DB.get('starters')||[]).filter(s => s.classId === S.classId);
+}
+function addStarter(studentId) {
+  if (!S.classId) { toast('Sélectionnez une classe','error'); return; }
+  const all = DB.get('starters')||[];
+  all.push({ id:uid(), studentId, classId:S.classId, lessonId:S.lessonId||null, createdAt:now() });
+  DB.set('starters', all);
+}
+function removeLastStarter(studentId) {
+  const all = DB.get('starters')||[];
+  // Remove the most recent starter entry for this student in current lesson
+  const idx = [...all].reverse().findIndex(s =>
+    s.studentId === studentId && s.classId === S.classId &&
+    (!S.lessonId || s.lessonId === S.lessonId)
+  );
+  if (idx === -1) return false;
+  all.splice(all.length - 1 - idx, 1);
+  DB.set('starters', all);
+  return true;
+}
+
+// ─── RECAP TABLE (training + passage) ─────────────────────────────────────────
+function renderRecapTable(containerId, passRecords) {
+  const students = getPresentStudents();
+  if (!students.length) { el(containerId).innerHTML = '<p class="empty-state">Aucun élève présent.</p>'; return; }
+
+  const starters = getStarters();
+  const cntPass = {}, cntChrono = {}, cntStarter = {};
+  passRecords.forEach(r => {
+    if (r.donneurId)  cntPass[r.donneurId]   = (cntPass[r.donneurId]||0)   + 1;
+    if (r.receveurId) cntPass[r.receveurId]  = (cntPass[r.receveurId]||0)  + 1;
+    if (r.chronoId)   cntChrono[r.chronoId]  = (cntChrono[r.chronoId]||0)  + 1;
+  });
+  starters.forEach(s => { cntStarter[s.studentId] = (cntStarter[s.studentId]||0) + 1; });
+
+  // Build value arrays (one per student, including zeros) to compute terciles
+  const vals = students.map(s => ({
+    p:  cntPass[s.id]    || 0,
+    c:  cntChrono[s.id]  || 0,
+    st: cntStarter[s.id] || 0,
+  }));
+
+  // Tercile thresholds: sort non-zero values, split in 3 equal bands
+  // Returns 'rc-zero' (neutral) when data is too sparse to be meaningful
+  function tercileClass(val, allVals) {
+    if (val === 0) return 'rc-zero';
+    const nonZero = allVals.filter(v => v > 0).sort((a, b) => a - b);
+    // Not enough participants: need at least 3 non-zero values with at least 2 distinct values
+    if (nonZero.length < 3) return 'rc-zero';
+    const distinct = new Set(nonZero).size;
+    if (distinct < 2) return 'rc-zero';
+    // Total sum too low: fewer than half the students have participated
+    const total = nonZero.reduce((a, b) => a + b, 0);
+    if (total < Math.ceil(allVals.length / 2)) return 'rc-zero';
+    const n = nonZero.length;
+    const lo = nonZero[Math.floor(n / 3)];
+    const hi = nonZero[Math.floor(2 * n / 3)];
+    if (val <= lo) return 'rc-low';
+    if (val <= hi) return 'rc-mid';
+    return 'rc-high';
+  }
+
+  const passVals    = vals.map(v => v.p);
+  const chronoVals  = vals.map(v => v.c);
+  const starterVals = vals.map(v => v.st);
+
+  el(containerId).innerHTML = `<table class="ranking-table">
+    <thead><tr>
+      <th>Élève</th>
+      <th title="Nombre de passages (donneur + receveur)">Passages</th>
+      <th title="Nombre de chronométrages effectués">⏱ Chrono</th>
+      <th title="Nombre de fois donneur de départ">🚦 Starter</th>
+    </tr></thead>
+    <tbody>${students.map((s, i) => {
+      const p  = vals[i].p;
+      const c  = vals[i].c;
+      const st = vals[i].st;
+      return `<tr>
+        <td><button class="btn-name-link" onclick="openStarterModal('${s.id}','${s.first} ${s.last}','${containerId}')">${s.first} ${s.last}</button></td>
+        <td><span class="rc-val ${tercileClass(p,  passVals)}">${p}</span></td>
+        <td><span class="rc-val ${tercileClass(c,  chronoVals)}">${c}</span></td>
+        <td><span class="rc-val ${tercileClass(st, starterVals)}">${st}</span></td>
+      </tr>`;
+    }).join('')}
+    </tbody>
+  </table>`;
+}
+
+function openStarterModal(studentId, studentLabel, sourceId) {
+  const starters = getStarters();
+  const cnt = starters.filter(s => s.studentId === studentId).length;
+  el('editModalTitle').textContent = `🚦 ${studentLabel} — Starter`;
+  el('editModalBody').innerHTML = `
+    <p style="margin-bottom:.75rem">Nombre de fois <strong>Starter</strong> dans cette leçon : <strong class="speed-val" id="starterCnt">${cnt}</strong></p>
+    <div style="display:flex;gap:.75rem;flex-wrap:wrap">
+      <button class="btn btn-primary btn-lg" style="flex:1" onclick="doAddStarter('${studentId}','${sourceId}')">+ Ajouter un Starter</button>
+      <button class="btn btn-ghost btn-lg" style="flex:1" onclick="doRemoveStarter('${studentId}','${sourceId}')">− Retirer un Starter</button>
+    </div>
+    <p class="text-muted mt-sm" style="font-size:.8rem">Les modifications sont immédiates et se reflètent dans le tableau récapitulatif.</p>`;
+  openModal('modalEdit');
+}
+
+function doAddStarter(studentId, sourceId) {
+  addStarter(studentId);
+  const cnt = getStarters().filter(s=>s.studentId===studentId).length;
+  const cntEl = el('starterCnt'); if (cntEl) cntEl.textContent = cnt;
+  renderTab(activeTab());
+}
+
+function doRemoveStarter(studentId, sourceId) {
+  const removed = removeLastStarter(studentId);
+  if (!removed) { toast('Aucun starter à retirer','error'); return; }
+  const cnt = getStarters().filter(s=>s.studentId===studentId).length;
+  const cntEl = el('starterCnt'); if (cntEl) cntEl.textContent = cnt;
+  renderTab(activeTab());
+  toast('Starter retiré');
+}
+el('btnTestEntry').addEventListener('click', () => {
+  if (!S.classId) { toast('Sélectionnez une classe','error'); return; }
+  _editId = null;
+  el('modalTestEntry').querySelector('.modal-header h3').textContent='Passage — Test individuel';
+  fillSel('testStudent','— Élève —');
+  el('testEntryDist').value = el('testDistance').value;
+  el('testEntryType').value = el('testType').value === 'both' ? 'arrete' : el('testType').value;
+  el('testEntryTime').value = '';
+  el('testEntryPass').value = 1;
+  openModal('modalTestEntry');
+});
+
+el('btnSaveTest').addEventListener('click', () => {
+  const sid=el('testStudent').value, dist=parseFloat(el('testEntryDist').value),
+        type=el('testEntryType').value, time=parseFloat(el('testEntryTime').value),
+        pass=parseInt(el('testEntryPass').value)||1;
+  if (!sid) { toast('Sélectionnez un élève','error'); return; }
+  if (!dist||isNaN(time)) { toast('Remplissez distance et temps','error'); return; }
+  if (_editId) {
+    updateRecord(_editId, {studentId:sid, dist, startType:type, time, passNum:pass});
+    _editId=null; el('modalTestEntry').querySelector('.modal-header h3').textContent='Passage — Test individuel';
+    closeModal('modalTestEntry'); renderTestTab(); toast('Passage modifié','success');
+  } else {
+    saveRecord({id:uid(), type:'test', studentId:sid, dist, startType:type, time, passNum:pass});
+    closeModal('modalTestEntry'); renderTestTab(); toast('Passage enregistré','success');
+  }
+});
+
+function renderTestTab() {
+  const recs = getRecords('test'); renderTestRanking(recs); renderTestHistory(recs);
+}
+function renderTestRanking(recs) {
+  if (!recs.length) { el('testRanking').innerHTML='<p class="empty-state">Aucun passage.</p>'; return; }
+  const map={}, cnt={};
+  recs.forEach(r => {
+    const k=r.studentId+'_'+r.dist+'_'+r.startType;
+    if (!map[k]||r.time<map[k].time) map[k]=r;
+    cnt[r.studentId]=(cnt[r.studentId]||0)+1;
+  });
+  const rows = Object.values(map).sort((a,b)=>parseFloat(kmh(b.dist,b.time))-parseFloat(kmh(a.dist,a.time)));
+  el('testRanking').innerHTML = `<table class="ranking-table">
+    <thead><tr><th>#</th><th>Élève</th><th>Distance</th><th>Type</th><th>Meilleur temps</th><th>Vitesse</th><th>Passages</th></tr></thead>
+    <tbody>${rows.map((r,i)=>`<tr class="rank-${i<3?i+1:''}">
+      <td class="rank-num">${i+1}</td><td>${studentName(r.studentId)}</td><td>${r.dist}m</td>
+      <td><span class="badge">${r.startType==='arrete'?'Arrêté':'Lancé'}</span></td>
+      <td class="time-val">${fmtT(r.time)}</td><td class="speed-val">${kmh(r.dist,r.time)} km/h</td>
+      <td>${cnt[r.studentId]||1}</td>
+    </tr>`).join('')}</tbody></table>`;
+}
+function renderTestHistory(recs) {
+  el('testHistory').innerHTML = recs.length ? [...recs].reverse().map(r=>`
+    <div class="history-item">
+      <strong>${studentName(r.studentId)}</strong>
+      <span class="badge">${r.startType==='arrete'?'Arrêté':'Lancé'}</span>
+      <span>${r.dist}m</span><span class="time-val">${fmtT(r.time)}</span>
+      <span class="speed-val">${kmh(r.dist,r.time)} km/h</span>
+      <span class="text-muted">Passage #${r.passNum||1}</span>
+      <span class="history-time">${fmtDT(r.createdAt)}</span>
+      <button class="btn btn-outline btn-sm" onclick="editTestRecord('${r.id}')">✎</button>
+      <button class="btn btn-danger btn-sm" onclick="delRec('${r.id}','test')">✕</button>
+    </div>`).join('') : '';
+}
+
+// ─── TAB TRAINING ─────────────────────────────────────────────────────────────
+let _markMode = 'coupelles';
+
+el('btnTrainEntry').addEventListener('click', () => {
+  if (!S.classId) { toast('Sélectionnez une classe','error'); return; }
+  _editId = null;
+  el('modalTrainEntry').querySelector('.modal-header h3').textContent='Passage — Entraînement 60m';
+  fillSel('trainDonneur','— Donneur —');
+  fillSel('trainReceveur','— Receveur —');
+  fillChronoSel('trainChrono');
+  buildZoneSel(); buildMarkArea();
+  resetRadioGroup('chronoValidation');
+  resetRadioGroup('trainQualityGroup');
+  el('trainTime').value='';
+  openModal('modalTrainEntry');
+});
+
+// Update chrono when donneur/receveur changes
+el('trainDonneur').addEventListener('change', () => updateChronoOptions('trainDonneur','trainReceveur','trainChrono'));
+el('trainReceveur').addEventListener('change', () => updateChronoOptions('trainDonneur','trainReceveur','trainChrono'));
+
+function buildZoneSel() {
+  const s=parseInt(el('trainZoneStart').value), e=parseInt(el('trainZoneEnd').value), n=parseInt(el('trainSubZones').value);
+  const sz=(e-s)/n; let opts='<option value="">— zone (optionnelle) —</option>';
+  for(let i=0;i<n;i++) opts+=`<option value="z${i+1}">Zone ${i+1} : ${Math.round(s+i*sz)}–${Math.round(s+(i+1)*sz)}m</option>`;
+  el('trainZoneUsed').innerHTML=opts;
+}
+
+function buildMarkArea() {
+  el('trainMarkArea').innerHTML=`
+    <div style="display:flex;gap:.4rem;margin-bottom:.35rem;flex-wrap:wrap">
+      <button class="btn btn-sm ${_markMode==='predefined'?'btn-primary':'btn-outline'}" onclick="setMarkMode('predefined')">Libre</button>
+      <button class="btn btn-sm ${_markMode==='coupelles'?'btn-primary':'btn-outline'}" onclick="setMarkMode('coupelles')">Coupelles</button>
+      <button class="btn btn-sm ${_markMode==='pieds'?'btn-primary':'btn-outline'}" onclick="setMarkMode('pieds')">Nb pieds</button>
+    </div>
+    <div id="markInput">${markInputHTML()}</div>`;
+}
+function setMarkMode(m) { _markMode=m; buildMarkArea(); }
+function markInputHTML() {
+  if (_markMode==='predefined') {
+    const marks = getFreeMarks();
+    return `<select id="trainMarkSel" class="select-full">
+      <option value="">— marque (optionnelle) —</option>${marks.map(o=>`<option>${o}</option>`).join('')}
+    </select>`;
+  }
+  if (_markMode==='coupelles') {
+    const coup = getCoupelles();
+    if (!coup.length) return `<p class="text-muted">Aucune coupelle configurée. Allez dans l'onglet ⚙ Enseignant.</p>`;
+    return `<div class="btn-group-radio" id="coupellesBtns">
+      <button class="btn-radio active" data-coup="">— aucune —</button>
+      ${coup.map(c=>`<button class="btn-radio" data-coup="${c.id}" style="border-color:${c.color};color:${c.color}">
+        <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:${c.color};margin-right:.25rem;vertical-align:middle"></span>${c.label} ${c.dist}m
+      </button>`).join('')}
+    </div>`;
+  }
+  // pieds
+  return `<div style="display:flex;align-items:center;gap:.4rem">
+    <input type="number" id="trainMarkPieds" class="input-full" min="1" max="20" placeholder="nb pieds" style="width:100px">
+    <span class="text-muted">pied(s)</span></div>`;
+}
+
+function getMarkVal() {
+  if (_markMode==='predefined') return el('trainMarkSel')?.value||'';
+  if (_markMode==='coupelles') {
+    const cid = document.querySelector('#coupellesBtns .btn-radio.active')?.dataset.coup;
+    if (!cid) return '';
+    const c = getCoupelles().find(x=>x.id===cid);
+    return c ? `${c.label} ${c.dist}m` : '';
+  }
+  const v=el('trainMarkPieds')?.value; return v?v+' pied(s)':'';
+}
+
+el('btnSaveTrain').addEventListener('click', () => {
+  const don=el('trainDonneur').value, rec=el('trainReceveur').value, chr=el('trainChrono').value;
+  if (!don||!rec) { toast('Donneur et receveur requis','error'); return; }
+  if (chr && (chr===don||chr===rec)) { toast('Le chronomètreur ne peut pas être le donneur ni le receveur','error'); return; }
+  const time=el('trainTime').value!==''?parseFloat(el('trainTime').value):null;
+  const qual=getRadioVal('trainQualityGroup','qval');
+  const zone=el('trainZoneUsed').value, mark=getMarkVal();
+  const cval=getRadioVal('chronoValidation','cval');
+  const data = {donneurId:don, receveurId:rec, chronoId:chr||null, time, quality:qual||null,
+    zone:zone||null, mark:mark||null, chronoVal:cval||null,
+    zoneStart:el('trainZoneStart').value, zoneEnd:el('trainZoneEnd').value};
+  if (_editId) {
+    updateRecord(_editId, data);
+    _editId=null; el('modalTrainEntry').querySelector('.modal-header h3').textContent='Passage — Entraînement 60m';
+    closeModal('modalTrainEntry'); renderTrainTab(); toast('Passage modifié','success');
+  } else {
+    saveRecord({id:uid(), type:'training', ...data});
+    closeModal('modalTrainEntry'); renderTrainTab(); toast('Passage enregistré','success');
+  }
+});
+
+function renderTrainTab() {
+  const recs=getRecords('training');
+  renderTrainRanking(recs);
+  renderRecapTable('trainRecap', recs);
+  renderTrainHistory(recs);
+}
+const pairKey = (a,b) => [a,b].sort().join('|');
+function renderTrainRanking(recs) {
+  if (!recs.length) { el('trainRanking').innerHTML='<p class="empty-state">Aucun passage.</p>'; return; }
+  const pm={}, pc={}, cc={};
+  recs.forEach(r => {
+    if (r.time!=null) { const k=pairKey(r.donneurId,r.receveurId); if(!pm[k]||r.time<pm[k].bestTime) pm[k]={k,donneurId:r.donneurId,receveurId:r.receveurId,bestTime:r.time,mark:r.mark}; }
+    const pk=pairKey(r.donneurId,r.receveurId); pc[pk]=(pc[pk]||0)+1;
+    if (r.chronoId) cc[r.chronoId]=(cc[r.chronoId]||0)+1;
+  });
+  const rows=Object.values(pm).sort((a,b)=>a.bestTime-b.bestTime);
+  const noTime=recs.filter(r=>r.time==null).map(r=>pairKey(r.donneurId,r.receveurId));
+  // Pairs with only no-time records
+  const allPairs=new Set(recs.map(r=>pairKey(r.donneurId,r.receveurId)));
+  const timedPairs=new Set(Object.keys(pm));
+  const noTimePairs=[...allPairs].filter(k=>!timedPairs.has(k)).map(k=>{const [a,b]=k.split('|');return {k,donneurId:a,receveurId:b,bestTime:null};});
+
+  el('trainRanking').innerHTML=`<table class="ranking-table">
+    <thead><tr><th>#</th><th>Binôme (Donneur / Receveur)</th><th>Meilleur temps</th><th>Vitesse</th><th>Marque</th><th>Passages</th><th>Moy. chronos</th></tr></thead>
+    <tbody>${[...rows,...noTimePairs].map((p,i)=>{
+      const avg=((cc[p.donneurId]||0)+(cc[p.receveurId]||0))/2;
+      return `<tr class="rank-${i<3&&p.bestTime?i+1:''}">
+        <td class="rank-num">${p.bestTime?i+1:'—'}</td>
+        <td><span class="${chronoCls(p.donneurId)}">${studentName(p.donneurId)}</span> / <span class="${chronoCls(p.receveurId)}">${studentName(p.receveurId)}</span></td>
+        <td class="time-val">${fmtT(p.bestTime)}</td>
+        <td class="speed-val">${p.bestTime?kmh(60,p.bestTime)+' km/h':'—'}</td>
+        <td>${p.mark||'—'}</td><td>${pc[p.k]||0}</td><td>${avg.toFixed(1)}</td>
+      </tr>`;}).join('')}</tbody></table>`;
+}
+function renderTrainHistory(recs) {
+  el('trainHistory').innerHTML = recs.length ? [...recs].reverse().map(r=>`
+    <div class="history-item quality-${r.quality||''}">
+      <strong>${studentName(r.donneurId)}</strong><span class="text-muted">/</span><strong>${studentName(r.receveurId)}</strong>
+      ${r.time!=null?`<span class="time-val">${fmtT(r.time)}</span><span class="speed-val">${kmh(60,r.time)} km/h</span>`:''}
+      ${r.quality?`<span class="badge">${QL[r.quality]||r.quality}</span>`:''}
+      ${r.zone?`<span class="text-muted">${r.zone}</span>`:''}
+      ${r.mark?`<span class="badge">📍 ${r.mark}</span>`:''}
+      ${r.chronoId?`<span class="text-muted">⏱ <span class="${chronoCls(r.chronoId)}">${studentName(r.chronoId)}</span></span>`:''}
+      ${r.chronoVal?`<span class="badge">${r.chronoVal}</span>`:''}
+      <span class="history-time">${fmtDT(r.createdAt)}</span>
+      <button class="btn btn-outline btn-sm" onclick="editTrainRecord('${r.id}')">✎</button>
+      <button class="btn btn-danger btn-sm" onclick="delRec('${r.id}','training')">✕</button>
+    </div>`).join('') : '';
+}
+
+// ─── TAB PASSAGE ──────────────────────────────────────────────────────────────
+el('btnPassageEntry').addEventListener('click', () => {
+  if (!S.classId) { toast('Sélectionnez une classe','error'); return; }
+  _editId = null;
+  el('modalPassageEntry').querySelector('.modal-header h3').textContent='Passage officiel 60m';
+  fillSel('passDonneur','— Donneur —');
+  fillSel('passReceveur','— Receveur —');
+  fillChronoSel('passChrono');
+  resetRadioGroup('passChronoValidation');
+  resetRadioGroup('passQualityGroup');
+  el('passTime').value='';
+  openModal('modalPassageEntry');
+});
+
+el('passDonneur').addEventListener('change', () => updateChronoOptions('passDonneur','passReceveur','passChrono'));
+el('passReceveur').addEventListener('change', () => updateChronoOptions('passDonneur','passReceveur','passChrono'));
+
+el('btnSavePassage').addEventListener('click', () => {
+  const don=el('passDonneur').value, rec=el('passReceveur').value, chr=el('passChrono').value;
+  if (!don||!rec) { toast('Donneur et receveur requis','error'); return; }
+  if (chr && (chr===don||chr===rec)) { toast('Le chronomètreur ne peut pas être le donneur ni le receveur','error'); return; }
+  const time=el('passTime').value!==''?parseFloat(el('passTime').value):null;
+  const qual=getRadioVal('passQualityGroup','pqval');
+  const cval=getRadioVal('passChronoValidation','pcval');
+  const data = {donneurId:don, receveurId:rec, chronoId:chr||null, time, quality:qual||null, chronoVal:cval||null};
+  if (_editId) {
+    updateRecord(_editId, data);
+    _editId=null; el('modalPassageEntry').querySelector('.modal-header h3').textContent='Passage officiel 60m';
+    closeModal('modalPassageEntry'); renderPassageTab(); toast('Passage modifié','success');
+  } else {
+    saveRecord({id:uid(), type:'passage', ...data});
+    closeModal('modalPassageEntry'); renderPassageTab(); toast('Passage enregistré','success');
+  }
+});
+
+function renderPassageTab() {
+  const recs=getRecords('passage');
+  renderPassageStatus(recs);
+  renderPassageRanking(recs);
+  renderRecapTable('passageRecap', recs);
+  renderPassageHistory(recs);
+}
+function renderPassageStatus(recs) {
+  const students=getPresentStudents(); if (!students.length){el('passageStatus').innerHTML='<p class="empty-state">Aucun élève présent.</p>';return;}
+  const cnt={};
+  recs.forEach(r=>{ [r.donneurId,r.receveurId].forEach(id=>{if(id)cnt[id]=(cnt[id]||0)+1;}); });
+  el('passageStatus').innerHTML=students.map(s=>{
+    const c=cnt[s.id]||0;
+    return `<div class="psc ${c===0?'no-passage':'has-passage'}">
+      <div>${s.first} ${s.last}${c===0?' ⚠️':''}</div>
+      <div class="pass-count">${c} passage(s) — objectif 2–4</div>
+    </div>`;}).join('');
+}
+function renderPassageRanking(recs) {
+  if (!recs.length){el('passageRanking').innerHTML='<p class="empty-state">Aucun passage.</p>';return;}
+  const pm={};
+  recs.forEach(r=>{if(r.time!=null){const k=pairKey(r.donneurId,r.receveurId);if(!pm[k]||r.time<pm[k].bestTime)pm[k]={donneurId:r.donneurId,receveurId:r.receveurId,bestTime:r.time};}});
+  const rows=Object.values(pm).sort((a,b)=>a.bestTime-b.bestTime);
+  el('passageRanking').innerHTML=`<table class="ranking-table">
+    <thead><tr><th>#</th><th>Binôme</th><th>Meilleur temps</th><th>Vitesse</th></tr></thead>
+    <tbody>${rows.map((p,i)=>`<tr class="rank-${i<3?i+1:''}">
+      <td class="rank-num">${i+1}</td>
+      <td>${studentName(p.donneurId)} / ${studentName(p.receveurId)}</td>
+      <td class="time-val">${fmtT(p.bestTime)}</td><td class="speed-val">${kmh(60,p.bestTime)} km/h</td>
+    </tr>`).join('')}</tbody></table>`;
+}
+function renderPassageHistory(recs) {
+  el('passageHistory').innerHTML=recs.length?[...recs].reverse().map(r=>`
+    <div class="history-item quality-${r.quality||''}">
+      <strong>${studentName(r.donneurId)}</strong> / <strong>${studentName(r.receveurId)}</strong>
+      ${r.time!=null?`<span class="time-val">${fmtT(r.time)}</span><span class="speed-val">${kmh(60,r.time)} km/h</span>`:''}
+      ${r.quality?`<span class="badge">${QL[r.quality]||'—'}</span>`:''}
+      ${r.chronoId?`<span class="text-muted">⏱ <span class="${chronoCls(r.chronoId)}">${studentName(r.chronoId)}</span></span>`:''}
+      ${r.chronoVal?`<span class="badge">${r.chronoVal}</span>`:''}
+      <span class="history-time">${fmtDT(r.createdAt)}</span>
+      <button class="btn btn-outline btn-sm" onclick="editPassageRecord('${r.id}')">✎</button>
+      <button class="btn btn-danger btn-sm" onclick="delRec('${r.id}','passage')">✕</button>
+    </div>`).join(''):'';
+}
+
+// ─── TAB BATTLE ───────────────────────────────────────────────────────────────
+el('btnBattleSetup').addEventListener('click', () => {
+  if (!S.classId) { toast('Sélectionnez une classe','error'); return; }
+  el('bsLaps').value=el('battleLaps').value; el('bsDist').value=el('battleLapDist').value;
+  S.battleTeams=[]; addBattleTeam(); addBattleTeam(); renderTeamsBuilder(); openModal('modalBattleSetup');
+});
+el('btnAddBattleTeam').addEventListener('click', () => { addBattleTeam(); renderTeamsBuilder(); });
+
+function addBattleTeam() { S.battleTeams.push({id:uid(),members:['']}); }
+function renderTeamsBuilder() {
+  const stud=getPresentStudents();
+  const opts=stud.map(s=>`<option value="${s.id}">${s.first} ${s.last}</option>`).join('');
+  el('battleTeamsBuilder').innerHTML=S.battleTeams.map((t,ti)=>`
+    <div class="battle-team-row">
+      <span class="battle-team-label">Équipe ${ti+1}</span>
+      <div style="display:flex;flex-direction:column;gap:.35rem;flex:1">
+        ${t.members.map((m,mi)=>`<div style="display:flex;gap:.4rem;align-items:center">
+          <select class="select-sm" style="flex:1" onchange="S.battleTeams[${ti}].members[${mi}]=this.value">
+            <option value="">— Pos. ${mi+1} —</option>${opts}
+          </select>
+          ${mi>0?`<button class="btn btn-danger btn-sm" onclick="rmBattleMember(${ti},${mi})">−</button>`:''}
+        </div>`).join('')}
+        <button class="btn btn-outline btn-sm" onclick="S.battleTeams[${ti}].members.push('');renderTeamsBuilder()">+ Élève</button>
+      </div>
+      ${S.battleTeams.length>2?`<button class="btn btn-danger btn-sm" onclick="S.battleTeams.splice(${ti},1);renderTeamsBuilder()">Suppr.</button>`:''}
+    </div>`).join('');
+  S.battleTeams.forEach((t,ti)=>{
+    const rows=el('battleTeamsBuilder').querySelectorAll('.battle-team-row');
+    if (!rows[ti]) return;
+    t.members.forEach((m,mi)=>{ const s=rows[ti].querySelectorAll('select')[mi]; if(s&&m) s.value=m; });
+  });
+}
+function rmBattleMember(ti,mi) { S.battleTeams[ti].members.splice(mi,1); renderTeamsBuilder(); }
+
+el('btnStartBattle').addEventListener('click', () => {
+  const laps=parseInt(el('bsLaps').value)||4, dist=parseFloat(el('bsDist').value)||60;
+  const teams=S.battleTeams.map((t,i)=>({id:t.id,label:'Équipe '+(i+1),members:t.members.filter(Boolean)})).filter(t=>t.members.length>0);
+  if (teams.length<2){toast('Au moins 2 équipes','error');return;}
+  S.activeBattle={id:uid(),teams,laps,dist,results:{},currentLap:0,running:false};
+  teams.forEach(t=>{S.activeBattle.results[t.id]={times:[],qualities:[]};});
+  closeModal('modalBattleSetup'); renderBattleArea(); _swElapsed=0;
+});
+
+let _swStart=null, _swElapsed=0, _swInterval=null;
+function toggleStopwatch() {
+  const b=S.activeBattle; if (!b) return;
+  if (!b.running) {
+    _swStart=Date.now()-_swElapsed; b.running=true;
+    _swInterval=setInterval(()=>{_swElapsed=Date.now()-_swStart;const d=el('swDisplay');if(d)d.textContent=fmtSw(_swElapsed);},50);
+  } else {
+    clearInterval(_swInterval); b.running=false;
+  }
+  renderBattleArea();
+}
+function fmtSw(ms){const m=Math.floor(ms/60000),s=Math.floor((ms%60000)/1000),cs=Math.floor((ms%1000)/10);return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}.${String(cs).padStart(2,'0')}`;}
+
+function recordLap() {
+  const b=S.activeBattle; if(!b||!b.running) return;
+  const lapTime=_swElapsed/1000, lap=b.currentLap;
+  if (lap>=b.laps) return;
+  b.teams.forEach(t=>{if(!b.results[t.id])b.results[t.id]={times:[],qualities:[]};b.results[t.id].times[lap]=lapTime;});
+  b.currentLap++; _swElapsed=0; _swStart=Date.now();
+  if (b.currentLap>=b.laps){clearInterval(_swInterval);b.running=false;}
+  renderBattleArea(); openLapQuality(lap);
+}
+
+function openLapQuality(lap) {
+  const b=S.activeBattle;
+  let html=`<p style="margin-bottom:.5rem;font-weight:500">Qualité transmission — Tour ${lap+1}</p>`;
+  b.teams.forEach(t=>{ html+=`<div class="form-group mt-xs"><label>${t.label}</label>
+    <select id="lq_${t.id}" class="select-full"><option value="">—</option>
+    ${Object.entries(QL).map(([k,v])=>`<option value="${k}">${v}</option>`).join('')}</select></div>`; });
+  el('editModalTitle').textContent='Qualité des transmissions';
+  el('editModalBody').innerHTML=html+`<div class="modal-footer"><button class="btn btn-primary" onclick="saveLapQuality(${lap})">OK</button></div>`;
+  openModal('modalEdit');
+}
+function saveLapQuality(lap) {
+  const b=S.activeBattle;
+  b.teams.forEach(t=>{ const s=el('lq_'+t.id); if(s) b.results[t.id].qualities[lap]=s.value; });
+  closeModal('modalEdit'); renderBattleArea();
+}
+function editBattleLap(lap,t1id,t2id) {
+  const b=S.activeBattle; const r1=b.results[t1id],r2=b.results[t2id];
+  const t1=b.teams.find(t=>t.id===t1id),t2=b.teams.find(t=>t.id===t2id);
+  el('editModalTitle').textContent=`Modifier Tour ${lap+1}`;
+  el('editModalBody').innerHTML=`<div class="form-row">
+    <div class="form-group"><label>${t1.label} — temps (s)</label><input type="number" id="ebl1t" class="input-full" step="0.01" value="${r1.times[lap]||''}"></div>
+    <div class="form-group"><label>${t2.label} — temps (s)</label><input type="number" id="ebl2t" class="input-full" step="0.01" value="${r2.times[lap]||''}"></div>
+  </div>
+  <div class="form-row">
+    <div class="form-group"><label>${t1.label} — qualité</label><select id="ebl1q" class="select-full">${Object.entries(QL).map(([k,v])=>`<option value="${k}"${r1.qualities[lap]===k?' selected':''}>${v}</option>`).join('')}</select></div>
+    <div class="form-group"><label>${t2.label} — qualité</label><select id="ebl2q" class="select-full">${Object.entries(QL).map(([k,v])=>`<option value="${k}"${r2.qualities[lap]===k?' selected':''}>${v}</option>`).join('')}</select></div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-ghost" data-close="modalEdit">Annuler</button>
+    <button class="btn btn-primary" onclick="saveLapEdit(${lap},'${t1id}','${t2id}')">OK</button>
+  </div>`;
+  openModal('modalEdit');
+}
+function saveLapEdit(lap,t1id,t2id) {
+  const b=S.activeBattle;
+  b.results[t1id].times[lap]=parseFloat(el('ebl1t').value)||0;
+  b.results[t2id].times[lap]=parseFloat(el('ebl2t').value)||0;
+  b.results[t1id].qualities[lap]=el('ebl1q').value;
+  b.results[t2id].qualities[lap]=el('ebl2q').value;
+  closeModal('modalEdit'); renderBattleArea();
+}
+
+function renderBattleArea() {
+  const b=S.activeBattle;
+  if (!b) { el('battleArea').innerHTML='<div class="card"><p class="empty-state">Configurez une battle pour commencer.</p></div>'; return; }
+  let html=`<div class="battle-area"><div class="card">
+    <div class="sw-display" id="swDisplay">${fmtSw(_swElapsed)}</div>
+    <button class="sw-btn ${b.running?'running':''}" onclick="toggleStopwatch()">${b.running?'⏹ Stop':'▶ Démarrer'}</button>
+    ${b.running?`<button class="btn btn-accent btn-full btn-lg" style="margin-top:.5rem" onclick="recordLap()">🏁 Enregistrer tour ${b.currentLap+1}/${b.laps}</button>`:''}
+    ${!b.running&&b.currentLap>0&&b.currentLap<b.laps?`<button class="btn btn-outline btn-full" style="margin-top:.5rem" onclick="toggleStopwatch()">▶ Reprendre</button>`:''}
+  </div>`;
+  for (let i=0;i<b.teams.length;i+=2) {
+    const t1=b.teams[i],t2=b.teams[i+1]; if(!t2) continue;
+    const r1=b.results[t1.id],r2=b.results[t2.id];
+    let s1=0,s2=0;
+    for(let l=0;l<b.laps;l++){const a=r1.times[l],bv=r2.times[l];if(a&&bv){if(a<bv)s1++;else if(bv<a)s2++;}}
+    html+=`<div class="battle-match">
+      <div class="battle-match-header"><span>${t1.label} <span class="speed-val">${s1}</span> — <span class="speed-val">${s2}</span> ${t2.label}</span></div>
+      <div class="battle-laps">`;
+    for(let l=0;l<b.laps;l++){
+      const a=r1.times[l],bv=r2.times[l],q1=r1.qualities[l],q2=r2.qualities[l];
+      html+=`<div class="battle-lap-row">
+        <span class="battle-lap-num">Tour ${l+1}</span>
+        <span class="${a&&bv&&a<bv?'lap-result':'time-val'}">${a?fmtT(a):'—'}</span>
+        ${q1?`<span class="badge" style="font-size:.72rem">${QL[q1]||q1}</span>`:''}
+        <span class="text-muted" style="margin:0 .25rem">vs</span>
+        <span class="${a&&bv&&bv<a?'lap-result':'time-val'}">${bv?fmtT(bv):'—'}</span>
+        ${q2?`<span class="badge" style="font-size:.72rem">${QL[q2]||q2}</span>`:''}
+        ${(a||bv)?`<button class="btn btn-outline btn-sm" onclick="editBattleLap(${l},'${t1.id}','${t2.id}')">✎</button>`:''}
+      </div>`;
+    }
+    html+=`</div></div>`;
+  }
+  html+=`<div style="display:flex;gap:.5rem;justify-content:flex-end">
+    <button class="btn btn-primary" onclick="saveBattle()">💾 Sauvegarder</button>
+    <button class="btn btn-danger" onclick="clearBattle()">Annuler</button>
+  </div></div>`;
+  el('battleArea').innerHTML=html;
+}
+
+function saveBattle() {
+  const b=S.activeBattle; if(!b) return;
+  saveRecord({id:b.id,type:'battle',teams:b.teams,laps:b.laps,dist:b.dist,results:b.results});
+  clearBattle(); toast('Battle sauvegardée','success'); renderBattleTab();
+}
+function clearBattle() {
+  S.activeBattle=null; clearInterval(_swInterval); _swElapsed=0;
+  el('battleArea').innerHTML='<div class="card"><p class="empty-state">Configurez une battle pour commencer.</p></div>';
+}
+
+function renderBattleTab() {
+  if (S.activeBattle) renderBattleArea();
+  const recs=(DB.get('records')||[]).filter(r=>r.type==='battle'&&r.classId===S.classId);
+  el('battleHistory').innerHTML=recs.length?[...recs].reverse().map(r=>`
+    <div class="history-item">
+      <span>${r.laps} tours × ${r.dist}m</span>
+      <span>${r.teams?r.teams.map(t=>t.label).join(' vs '):''}</span>
+      <span class="history-time">${fmtDT(r.createdAt)}</span>
+    </div>`).join(''):'';
+}
+
+// ─── PROFILS ──────────────────────────────────────────────────────────────────
+el('profileSearch').addEventListener('input', renderProfiles);
+
+function renderProfiles() {
+  const q=(el('profileSearch').value||'').toLowerCase();
+  const students=getStudents().filter(s=>(s.first+' '+s.last).toLowerCase().includes(q));
+  if (!students.length){el('profilesGrid').innerHTML='<p class="empty-state">Aucun élève.</p>';return;}
+  const recs=(DB.get('records')||[]).filter(r=>r.classId===S.classId&&(r.type==='training'||r.type==='passage'));
+  el('profilesGrid').innerHTML=students.map(s=>{
+    const cnt=recs.filter(r=>r.donneurId===s.id||r.receveurId===s.id).length;
+    const cc=chronoCls(s.id);
+    return `<div class="profile-card" onclick="openProfile('${s.id}')">
+      <div class="profile-avatar">${s.first[0]}${s.last?s.last[0]:''}</div>
+      <div class="profile-name ${cc}">${s.first} ${s.last}</div>
+      <div class="profile-stats">${cnt} passage(s)</div>
+    </div>`;}).join('');
+}
+
+function openProfile(sid) {
+  const s=getStudents().find(x=>x.id===sid); if (!s) return;
+  const all=(DB.get('records')||[]).filter(r=>r.classId===S.classId);
+  const asDon=all.filter(r=>(r.type==='training'||r.type==='passage')&&r.donneurId===sid);
+  const asRec=all.filter(r=>(r.type==='training'||r.type==='passage')&&r.receveurId===sid);
+  const asChr=all.filter(r=>(r.type==='training'||r.type==='passage')&&r.chronoId===sid);
+  const asTest=all.filter(r=>r.type==='test'&&r.studentId===sid);
+  const lessons=(DB.get('lessons')||[]).filter(l=>l.classId===S.classId);
+  const allStarters = getAllClassStarters().filter(s=>s.studentId===sid);
+
+  // Passages par leçon
+  const lessPM={};
+  [...asDon,...asRec].forEach(r=>{if(r.lessonId)lessPM[r.lessonId]=(lessPM[r.lessonId]||0)+1;});
+  // Chronométrages par leçon
+  const lessCM={};
+  asChr.forEach(r=>{if(r.lessonId)lessCM[r.lessonId]=(lessCM[r.lessonId]||0)+1;});
+  // Starters par leçon
+  const lessST={};
+  allStarters.forEach(r=>{if(r.lessonId)lessST[r.lessonId]=(lessST[r.lessonId]||0)+1;});
+
+  const partBest={};
+  [...asDon,...asRec].filter(r=>r.time!=null).forEach(r=>{
+    const pid=r.donneurId===sid?r.receveurId:r.donneurId;
+    if(!partBest[pid]||r.time<partBest[pid])partBest[pid]=r.time;
+  });
+  const cs=chronoStatus(sid);
+  const csLabel={green:'🟢 Validé (≥3 fois)',orange:'🟠 En construction',red:'🔴 Non validé','':`⚪ Aucune appréciation`};
+  el('profileModalTitle').textContent=s.first+' '+s.last;
+  el('profileModalBody').innerHTML=`
+    <div class="card"><div class="card-title">Vue d'ensemble</div>
+      <div style="display:flex;gap:1.5rem;flex-wrap:wrap;font-size:.9rem">
+        <span>🏃 Passages : <strong>${asDon.length + asRec.length}</strong></span>
+        <span>⏱ Chronos : <strong>${asChr.length}</strong></span>
+        <span>🚦 Starters : <strong>${allStarters.length}</strong></span>
+      </div>
+    </div>
+    <div class="card mt-sm"><div class="card-title">Chronométrage <span class="badge">${csLabel[cs]}</span></div>
+      <p>Total : <strong>${asChr.length}</strong> &nbsp;|&nbsp; Moy./leçon : <strong>${lessons.length?(asChr.length/lessons.length).toFixed(1):'—'}</strong></p>
+    </div>
+    <div class="card mt-sm"><div class="card-title">Rôle Starter 🚦</div>
+      <p>Total : <strong>${allStarters.length}</strong> &nbsp;|&nbsp; Moy./leçon : <strong>${lessons.length?(allStarters.length/lessons.length).toFixed(1):'—'}</strong></p>
+    </div>
+    <div class="card mt-sm"><div class="card-title">Rôle Donneur — ${asDon.length} passage(s)</div>
+      ${asDon.filter(r=>r.time!=null).length?`<p>Meilleur : <strong class="speed-val">${fmtT(Math.min(...asDon.filter(r=>r.time!=null).map(r=>r.time)))}</strong></p>`:'<p>Aucun temps enregistré.</p>'}
+    </div>
+    <div class="card mt-sm"><div class="card-title">Rôle Receveur — ${asRec.length} passage(s)</div>
+      ${asRec.filter(r=>r.time!=null).length?`<p>Meilleur : <strong class="speed-val">${fmtT(Math.min(...asRec.filter(r=>r.time!=null).map(r=>r.time)))}</strong></p>`:'<p>Aucun temps enregistré.</p>'}
+    </div>
+    ${Object.keys(partBest).length?`<div class="card mt-sm"><div class="card-title">Meilleurs temps par partenaire</div>
+      <table class="ranking-table"><thead><tr><th>Partenaire</th><th>Meilleur temps</th><th>Vitesse</th></tr></thead>
+      <tbody>${Object.entries(partBest).map(([pid,t])=>`<tr><td>${studentName(pid)}</td><td class="time-val">${fmtT(t)}</td><td class="speed-val">${kmh(60,t)} km/h</td></tr>`).join('')}</tbody>
+      </table></div>`:''}
+    ${lessons.length?`<div class="card mt-sm"><div class="card-title">Récapitulatif par leçon</div>
+      <table class="ranking-table"><thead><tr><th>Leçon</th><th>Date</th><th>Passages</th><th>⏱ Chrono</th><th>🚦 Starter</th></tr></thead>
+      <tbody>${lessons.map(l=>`<tr>
+        <td>${l.name}</td><td>${l.date}</td>
+        <td>${lessPM[l.id]||0}</td>
+        <td>${lessCM[l.id]||0}</td>
+        <td>${lessST[l.id]||0}</td>
+      </tr>`).join('')}</tbody>
+      </table></div>`:''}
+    ${asTest.length?`<div class="card mt-sm"><div class="card-title">Tests individuels</div>
+      <table class="ranking-table"><thead><tr><th>#</th><th>Type</th><th>Dist.</th><th>Temps</th><th>Vitesse</th></tr></thead>
+      <tbody>${asTest.map((r,i)=>`<tr><td>#${r.passNum||i+1}</td><td>${r.startType==='arrete'?'Arrêté':'Lancé'}</td><td>${r.dist}m</td><td class="time-val">${fmtT(r.time)}</td><td class="speed-val">${kmh(r.dist,r.time)} km/h</td></tr>`).join('')}</tbody>
+      </table></div>`:''}`;
+  openModal('modalProfile');
+}
+
+// ─── EDIT / DELETE RECORDS ────────────────────────────────────────────────────
+function delRec(id) {
+  if (!confirm('Supprimer ce passage ?')) return;
+  deleteRecord(id); renderTab(activeTab()); toast('Passage supprimé');
+}
+// ─── EDIT : réutilise les mêmes modales que la saisie ─────────────────────────
+// _editId : null = création, string = modification en cours
+let _editId = null;
+
+// Indique visuellement qu'on est en mode édition
+function setEditMode(modalId, titleEl, editId) {
+  _editId = editId;
+  if (titleEl) titleEl.textContent = '✎ ' + titleEl.textContent;
+  // Change le bouton save en "Mettre à jour" visuellement
+  // (le handler du btnSave* lit _editId pour décider save vs update)
+}
+
+function editTestRecord(id) {
+  const r = (DB.get('records')||[]).find(x=>x.id===id); if (!r) return;
+  // Ouvre la modale de saisie test et pré-remplit
+  fillSel('testStudent','— Élève —');
+  el('testEntryDist').value  = r.dist ?? el('testDistance').value;
+  el('testEntryType').value  = r.startType || 'arrete';
+  el('testEntryPass').value  = r.passNum || 1;
+  el('testEntryTime').value  = r.time != null ? r.time : '';
+  // Pré-sélectionner l'élève
+  el('testStudent').value = r.studentId || '';
+  // Mode édition
+  _editId = id;
+  el('modalTestEntry').querySelector('.modal-header h3').textContent = '✎ Modifier — Test individuel';
+  openModal('modalTestEntry');
+}
+
+function editTrainRecord(id) {
+  const r = (DB.get('records')||[]).find(x=>x.id===id); if (!r) return;
+  // Ouvre la modale d'entraînement et pré-remplit
+  fillSel('trainDonneur','— Donneur —');
+  fillSel('trainReceveur','— Receveur —');
+  fillChronoSel('trainChrono');
+  buildZoneSel(); buildMarkArea();
+  // Pré-remplir élèves
+  el('trainDonneur').value  = r.donneurId  || '';
+  el('trainReceveur').value = r.receveurId || '';
+  // Rafraîchir le select chrono en excluant donneur/receveur, puis sélectionner
+  updateChronoOptions('trainDonneur','trainReceveur','trainChrono');
+  el('trainChrono').value   = r.chronoId   || '';
+  // Temps
+  el('trainTime').value = r.time != null ? r.time : '';
+  // Qualité — activer le bon bouton
+  resetRadioGroup('trainQualityGroup');
+  if (r.quality) {
+    const qBtn = document.querySelector(`#trainQualityGroup [data-qval="${r.quality}"]`);
+    if (qBtn) { document.querySelectorAll('#trainQualityGroup .btn-radio').forEach(b=>b.classList.remove('active')); qBtn.classList.add('active'); }
+  }
+  // Zone
+  if (r.zone) el('trainZoneUsed').value = r.zone;
+  // Marque : détecter le mode selon la valeur stockée
+  if (r.mark) {
+    const coup = getCoupelles().find(c => `${c.label} ${c.dist}m` === r.mark);
+    if (coup) {
+      _markMode = 'coupelles'; buildMarkArea();
+      const btn = document.querySelector(`#coupellesBtns [data-coup="${coup.id}"]`);
+      if (btn) { document.querySelectorAll('#coupellesBtns .btn-radio').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); }
+    } else if (r.mark.includes('pied')) {
+      _markMode = 'pieds'; buildMarkArea();
+      const v = r.mark.replace(' pied(s)',''); if (el('trainMarkPieds')) el('trainMarkPieds').value = v;
+    } else {
+      _markMode = 'predefined'; buildMarkArea();
+      if (el('trainMarkSel')) el('trainMarkSel').value = r.mark;
+    }
+  }
+  // Validation chrono
+  resetRadioGroup('chronoValidation');
+  if (r.chronoVal) {
+    const cvBtn = document.querySelector(`#chronoValidation [data-cval="${r.chronoVal}"]`);
+    if (cvBtn) { document.querySelectorAll('#chronoValidation .btn-radio').forEach(b=>b.classList.remove('active')); cvBtn.classList.add('active'); }
+  }
+  // Mode édition
+  _editId = id;
+  el('modalTrainEntry').querySelector('.modal-header h3').textContent = '✎ Modifier — Entraînement 60m';
+  openModal('modalTrainEntry');
+}
+
+function editPassageRecord(id) {
+  const r = (DB.get('records')||[]).find(x=>x.id===id); if (!r) return;
+  fillSel('passDonneur','— Donneur —');
+  fillSel('passReceveur','— Receveur —');
+  fillChronoSel('passChrono');
+  el('passDonneur').value  = r.donneurId  || '';
+  el('passReceveur').value = r.receveurId || '';
+  updateChronoOptions('passDonneur','passReceveur','passChrono');
+  el('passChrono').value   = r.chronoId   || '';
+  el('passTime').value = r.time != null ? r.time : '';
+  // Qualité
+  resetRadioGroup('passQualityGroup');
+  if (r.quality) {
+    const qBtn = document.querySelector(`#passQualityGroup [data-pqval="${r.quality}"]`);
+    if (qBtn) { document.querySelectorAll('#passQualityGroup .btn-radio').forEach(b=>b.classList.remove('active')); qBtn.classList.add('active'); }
+  }
+  // Validation chrono
+  resetRadioGroup('passChronoValidation');
+  if (r.chronoVal) {
+    const cvBtn = document.querySelector(`#passChronoValidation [data-pcval="${r.chronoVal}"]`);
+    if (cvBtn) { document.querySelectorAll('#passChronoValidation .btn-radio').forEach(b=>b.classList.remove('active')); cvBtn.classList.add('active'); }
+  }
+  _editId = id;
+  el('modalPassageEntry').querySelector('.modal-header h3').textContent = '✎ Modifier — Passage 60m';
+  openModal('modalPassageEntry');
+}
+
+// Réinitialise le titre de la modale quand on la ferme
+document.addEventListener('click', e => {
+  if (!e.target.dataset.close && !e.target.classList.contains('modal-overlay')) return;
+  const targetId = e.target.dataset.close || e.target.id;
+  if (targetId === 'modalTestEntry')  { _editId=null; el('modalTestEntry').querySelector('.modal-header h3').textContent='Passage — Test individuel'; }
+  if (targetId === 'modalTrainEntry') { _editId=null; el('modalTrainEntry').querySelector('.modal-header h3').textContent='Passage — Entraînement 60m'; }
+  if (targetId === 'modalPassageEntry') { _editId=null; el('modalPassageEntry').querySelector('.modal-header h3').textContent='Passage officiel 60m'; }
+});
+
+// ─── INIT ─────────────────────────────────────────────────────────────────────
+function init() {
+  el('newLessonDate').valueAsDate = new Date();
+  populateClassSelect();
+  renderClassList();
+}
+init();
+</script>
+</body>
+</html>
